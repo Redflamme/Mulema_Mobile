@@ -1,0 +1,52 @@
+import React, { useState, useEffect } from "react";
+import { View, Text, Pressable, ActivityIndicator } from "react-native";
+import { useRouter } from "expo-router";
+
+const LanguageSelection = () => {
+  const router = useRouter();
+  const [languages, setLanguages] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Simulation de la récupération des langues depuis une API (remplace avec ton backend)
+  useEffect(() => {
+    // Remplace par ton API : fetch("https://ton-api.com/languages")
+    setTimeout(() => {
+      setLanguages([
+        { id: 1, name: "Duálá" },
+        { id: 2, name: "Bassa" },
+        { id: 3, name: "Ghomálá" },
+      ]);
+      setLoading(false);
+    }, 1000); // Simulation d'un délai réseau
+  }, []);
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="green" />;
+  }
+
+  return (
+    <View style={{ padding: 20, alignItems: "center" }}>
+      {languages.map((lang) => (
+        <Pressable
+          key={lang.id}
+          onPress={() => router.push(`/welcome-video?name=${lang.id}`)}
+          style={({ pressed }) => [
+            {
+              width: 150,
+              height: 60,
+              justifyContent: "center",
+              alignItems: "center",
+              marginVertical: 5,
+              borderRadius: 8,
+            },
+            pressed ? { backgroundColor: "green" } : { backgroundColor: "#ccc" },
+          ]}
+        >
+          <Text style={{ textAlign: "center", fontSize: 16 }}>{lang.name}</Text>
+        </Pressable>
+      ))}
+    </View>
+  );
+};
+
+export default LanguageSelection;
